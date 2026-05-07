@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.label.admin.mapper.SysUserMapper">
+
+    <resultMap id="UserWithRoleMap" type="com.label.admin.entity.SysUser">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="nickname" property="nickname"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+        <result column="avatar" property="avatar"/>
+        <result column="status" property="status"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        <result column="role_name" property="roleName"/>
+        <result column="role_code" property="roleCode"/>
+        <result column="role_id" property="roleId"/>
+    </resultMap>
+
+    <select id="selectUserWithRole" resultMap="UserWithRoleMap">
+        SELECT u.*, r.role_name, r.role_code, r.id as role_id
+        FROM sys_user u
+        LEFT JOIN sys_user_role ur ON u.id = ur.user_id
+        LEFT JOIN sys_role r ON ur.role_id = r.id
+        WHERE u.id = #{userId}
+    </select>
+
+    <select id="selectByUsername" resultMap="UserWithRoleMap">
+        SELECT u.*, r.role_name, r.role_code, r.id as role_id
+        FROM sys_user u
+        LEFT JOIN sys_user_role ur ON u.id = ur.user_id
+        LEFT JOIN sys_role r ON ur.role_id = r.id
+        WHERE u.username = #{username}
+    </select>
+
+    <select id="selectUserPage" resultMap="UserWithRoleMap">
+        SELECT u.*, r.role_name, r.role_code, r.id as role_id
+        FROM sys_user u
+        LEFT JOIN sys_user_role ur ON u.id = ur.user_id
+        LEFT JOIN sys_role r ON ur.role_id = r.id
+        <where>
+            <if test="username != null and username != ''">
+                AND u.username LIKE CONCAT('%', #{username}, '%')
+            </if>
+            <if test="status != null">
+                AND u.status = #{status}
+            </if>
+        </where>
+        ORDER BY u.created_at DESC
+    </select>
+</mapper>

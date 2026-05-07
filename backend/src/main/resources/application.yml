@@ -1,0 +1,53 @@
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+
+spring:
+  datasource:
+    url: jdbc:mysql://db:3306/label_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    serialization:
+      write-dates-as-timestamps: false
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+app:
+  jwt:
+    secret: LabelAdmin2024SecureJwtSecretKeyThatIsLongEnoughForHS512Algorithm!!
+    expiration: 86400000
+  sm2:
+    private-key: "${APP_SM2_PRIVATE_KEY:00B9AB0B828FF68872F21A837FC303668428DEA11DCD1B24429D0C99E24EED83D5}"
+    public-key: "${APP_SM2_PUBLIC_KEY:04B9C9A6E04E9C91F7BA880429273747D7EF5DDEB0BB2FF6317EB00BEF331A83081A6994B8993F3F5D6EADDDB81872266C87C018FB4162F5AF347B483E24620207}"
+  upload:
+    path: /app/uploads
+
+logging:
+  level:
+    root: INFO
+    com.label.admin: DEBUG
+    com.baomidou.mybatisplus: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
