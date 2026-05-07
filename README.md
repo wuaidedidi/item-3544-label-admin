@@ -224,7 +224,7 @@ label-admin/
 - 使用 SLF4J + Logback 结构化日志
 - 按模块分级输出 (INFO/DEBUG/WARN/ERROR)
 - AOP 操作日志 (@OperationLog) 自动记录关键操作
-- 通过 `docker compose logs` 可观测
+- 通过 `docker logs <container>` 可观测
 
 ### 2. 错误处理
 - `GlobalExceptionHandler` 统一捕获所有异常
